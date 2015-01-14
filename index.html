@@ -129,7 +129,7 @@ $(function() {
             return 'min+'+(s+1)+'*d';
         });
 
-        var d3_syntax = 'function colorscale(min, max) {\n    \\\\ source: '+link+' \n    var d = (max-min)/'+steps+';\n' + '    return d3.scale.threshold()\n        .range(['+list+'])\n        .domain(['+range.join(',')+']);\n}';
+        var d3_syntax = 'function colorscale(min, max) {\n    // source: '+link+' \n    var d = (max-min)/'+steps+';\n' + '    return d3.scale.threshold()\n        .range(['+list+'])\n        .domain(['+range.join(',')+']);\n}';
         
         // copy colors
         $('<pre/>')
