@@ -66,122 +66,133 @@ div.gradient div {
   </style>
   <script type="text/javascript">
 
-var width = $('.span8').width()-20;
+$(function() {
 
-function update() {
-    var bez = $('#bez').prop('checked'),
-        coL = $('#coL').prop('checked'),
-        colors = $('#colors').val().replace(/(, *| +)/g, ',').replace(/'/g, '').split(','),
-        steps = +$('#steps').val(),
-        color_s = '[\'' + colors.join('\',\'') + '\']';
-    
-    // initialize chroma.scale
-    if (bez) colors = chroma.interpolate.bezier(colors);
-    var cs = chroma.scale(colors).mode('lab').correctLightness(coL);
-    
-    // build chroma syntax
-    
-    if (bez) {
-        syntax = 'chroma.scale(chroma.interpolate('+color_s+'))';
-    } else {
-        syntax = 'chroma.scale('+color_s+')';
+    var width = $('.span8').width()-20;
+
+    function update() {
+        var bez = $('#bez').prop('checked'),
+            coL = $('#coL').prop('checked'),
+            colors = $('#colors').val().replace(/(, *| +)/g, ',').replace(/['"]/g, '').split(','),
+            steps = +$('#steps').val(),
+            color_s = '[\'' + colors.join('\',\'') + '\']';
+        
+        // initialize chroma.scale
+        if (bez) colors = chroma.interpolate.bezier(colors);
+        var cs = chroma.scale(colors).mode('lab').correctLightness(coL);
+        
+        // build chroma syntax
+        
+        if (bez) {
+            syntax = 'chroma.scale(chroma.interpolate('+color_s+'))';
+        } else {
+            syntax = 'chroma.scale('+color_s+')';
+        }
+        if (coL) syntax += '.correctLightness(true)';
+        
+        // clear display
+        $('#out').html('');
+        
+        // visualize scale
+        showScale(cs, steps, syntax, color_s);
+
+        serializeUrl();
     }
-    if (coL) syntax += '.correctLightness(true)';
-    
-    // clear display
-    $('#out').html('');
-    
-    // visualize scale
-    showScale(cs, steps, syntax, color_s);
+        
 
-    serializeUrl();
-}
-    
+    function showScale(cs, steps, syntax, color_s) {
+        var c = $('<div />')
+            .css('width', width)
+            .addClass('gradient')
+            .appendTo('#out');
 
-function showScale(cs, steps, syntax, color_s) {
-    var c = $('<div />')
-        .css('width', width)
-        .addClass('gradient')
-        .appendTo('#out');
+        var cols = [];
+        _.range(steps).forEach(function(i) {
+            var t = i/(steps-1);
+            $('<div />').appendTo(c)
+                .css({
+                    width: (100/steps)+'%',
+                    background: cs(t).hex()
+                });
+            cols.push(cs(t).hex());
+        });
+        
+        showLightnessCurve(cs, steps);
+        
+        var list = '\'' + cols.join('\',\'') + '\'',
+            colors = cols.join(' '),
+            hexlist = cols.map(function (c) { return c.replace('#','0x'); }).join(',');
+        
+        var link = location.href;
+        
+        var range = _.range(steps).map(function(s) {
+            return 'min+'+(s+1)+'*d';
+        });
 
-    var cols = [];
-    _.range(steps).each(function(i) {
-        var t = i/(steps-1);
-        $('<div />').appendTo(c)
-            .css({
-                width: (100/steps)+'%',
-                background: cs(t).hex()
-            });
-        cols.push(cs(t).hex());
-    });
-    
-    showLightnessCurve(cs, steps);
-    
-    var list = '\'' + cols.join('\',\'') + '\'',
-        colors = cols.join(' '),
-        hexlist = cols.map((c) -> c.replace('#','0x')).join(',');
-    
-    var link = location.href;
-    
-    var range = _.range(steps)[0...steps-1].map(function(s) {
-        return 'min+'+(s+1)+'*d';
-    });
+        var d3_syntax = 'function colorscale(min, max) {\n    \\\\ source: '+link+' \n    var d = (max-min)/'+steps+';\n' + '    return d3.scale.threshold()\n        .range(['+list+'])\n        .domain(['+range.join(',')+']);\n}';
+        
+        // copy colors
+        $('<pre/>')
+            .html([colors, hexlist, list, syntax, d3_syntax].join('\n\n'))
+            .appendTo('#out');
+    }
 
-    var d3_syntax = 'function colorscale(min, max) {\n    \\\\ source: '+link+' \n    var d = (max-min)/'+steps+';\n' + '    return d3.scale.threshold()\n        .range(['+list+'])\n        .domain(['+range.join(',')+']);\n}';
-    
-    // copy colors
-    $('<pre/>')
-        .html([colors, hexlist, list, syntax, d3_syntax].join('\n\n'))
-        .appendTo('#out');
-}
+    function showLightnessCurve(cs, steps) {
+        var s = document.createElementNS('http://www.w3.org/2000/svg','svg');
+        s.setAttribute('width', width+10);
+        s.setAttribute('height', 150);
+        var path = document.createElementNS('http://www.w3.org/2000/svg','path');
+        var d = '',
+            x = 10;
 
-function showLightnessCurve(cs, steps) {
-    var s = document.createElementNS('http://www.w3.org/2000/svg','svg');
-    s.setAttribute('width', width+10);
-    s.setAttribute('height', 150);
-    var path = document.createElementNS('http://www.w3.org/2000/svg','path');
-    var d = '',
-        x = 10;
+        _.range(steps).forEach(function(i) {
+            var t = i/(steps-1),
+                y = (102 - cs(t).lab()[0])*1.2;
+            x += width/steps;
+            if (d == '') d = 'M'+[10,y];
+            d += ' V'+y;
+            d += ' H'+x;
+        });        
+        path.setAttribute('d', d);
+        s.appendChild(path);
+        $('#out').append(s);
+    }
 
-    _.range(steps).each(function(i) {
-        var t = i/(steps-1),
-            y = (102 - cs(t).lab()[0])*1.2;
-        x += width/steps;
-        if (d == '') d = 'M'+[10,y];
-        d += ' V'+y;
-        d += ' H'+x;
-    });        
-    path.setAttribute('d', d);
-    s.appendChild(path);
-    $('#out').append(s);
-}
+    function serializeUrl() {
+        location.hash = '#' + 
+            'colors='+$('#colors').val().replace(/(, *| +)/g, ',').replace(/'/g, '') + '|' +
+            'steps='+$('#steps').val() + '|' +
+            'bez='+($('#bez').prop('checked') ? 1 : 0) + '|' +
+            'coL='+($('#coL').prop('checked') ? 1 : 0);
+    }
+        
+    function unserializeUrl() {
+        var vars = location.hash.substr(1).split('|');
+        _.each(vars, function(v) {
+            var v = v.split('='),
+                key = v[0], val = v[1];
+            if (key == 'steps') {
+                $('#steps').val(val);
+            } else if (key == 'colors') {
+                $('#colors').val(val);
+            } else if (key == 'bez') {
+                $('#bez').prop('checked', val == '1');
+            } else if (key == 'coL') {
+                $('#coL').prop('checked', val == '1');     
+            }
+        });
+            
+    }         
+    // load presets from hash
+    if (location.hash) unserializeUrl()
 
-function serializeUrl() {
-    location.hash = '#' + 
-        'colors='+$('#colors').val().replace(/(, *| +)/g, ',').replace(/'/g, '') + '|' +
-        'steps='+$('#steps').val() + '|' +
-        'bez='+($('#bez').prop('checked') ? 1 : 0) + '|' +
-        'coL='+($('#coL').prop('checked') ? 1 : 0);
-}
-    
-function unserializeUrl() {
-    var vars = location.hash.substr(1).split('|');
-    for v in (v.split('=') for v in vars)
-        [key,val] = v
-        if key == 'steps'
-            $('#steps').val(val)
-        else if key == 'colors'
-            $('#colors').val(val)
-        else if key == 'bez'
-            $('#bez').prop('checked', val == '1')
-        else if key == 'coL'
-            $('#coL').prop('checked', val == '1')  
-}         
-// load presets from hash
-if (location.hash) unserializeUrl()
 
-update()
-$('input').change(update);
+    $('input').change(update);
+    update();
+
+
+});
+
 
 </script>
 
