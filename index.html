@@ -127,7 +127,7 @@ $(function() {
     }
 
     function clean(s) {
-        return s.replace(/(, *| +)/g, ',').replace(/['"]/g, '').split(',');
+        return s.trim().replace(/(, *| +)/g, ',').replace(/['"]/g, '').split(',');
     }
 
     function showScale(cs, steps) {
