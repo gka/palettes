@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Chroma.js Color Scale Helper</title>
+  <script type='text/javascript' src='//code.jquery.com/jquery-1.10.1.js'></script>
+  <script type='text/javascript' src="//cdnjs.cloudflare.com/ajax/libs/chroma-js/0.6.3/chroma.min.js"></script>
+  <script type='text/javascript' src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.css">
+  <style type='text/css'>
+body {
+ padding: 20px;   
+}
+
+h2 {
+    font-weight: 300;
+}
+
+#steps {
+    width: 6em;
+    text-align: right;
+}
+
+#colors {
+    width: 98%;
+}
+
+
+svg {
+    margin: 10px 0;
+}
+
+svg path {
+    stroke: #000;
+    stroke-width: 2px;
+    fill: none;
+    shape-rendering: crispEdges;
+}
+
+
+#out {
+    margin-top: 2em;
+}
+
+div.gradient {
+    padding: 10px 10px 6px;
+    border-radius:4px;
+    background: Gainsboro;
+    text-align: center;
+}
+
+pre {
+    border: 0;
+    background: transparent;
+    color: gray;
+}
+
+div.gradient div {
+    display: inline-block;
+    height: 50px;
+    color: rgba(0,0,0,0);
+}
+
+  </style>
+  <script type="text/javascript">
+
+var width = $('.span8').width()-20;
+
+function update() {
+    var bez = $('#bez').prop('checked'),
+        coL = $('#coL').prop('checked'),
+        colors = $('#colors').val().replace(/(, *| +)/g, ',').replace(/'/g, '').split(','),
+        steps = +$('#steps').val(),
+        color_s = '[\'' + colors.join('\',\'') + '\']';
+    
+    // initialize chroma.scale
+    if (bez) colors = chroma.interpolate.bezier(colors);
+    var cs = chroma.scale(colors).mode('lab').correctLightness(coL);
+    
+    // build chroma syntax
+    
+    if (bez) {
+        syntax = 'chroma.scale(chroma.interpolate('+color_s+'))';
+    } else {
+        syntax = 'chroma.scale('+color_s+')';
+    }
+    if (coL) syntax += '.correctLightness(true)';
+    
+    // clear display
+    $('#out').html('');
+    
+    // visualize scale
+    showScale(cs, steps, syntax, color_s);
+
+    serializeUrl();
+}
+    
+
+function showScale(cs, steps, syntax, color_s) {
+    var c = $('<div />')
+        .css('width', width)
+        .addClass('gradient')
+        .appendTo('#out');
+
+    var cols = [];
+    _.range(steps).each(function(i) {
+        var t = i/(steps-1);
+        $('<div />').appendTo(c)
+            .css({
+                width: (100/steps)+'%',
+                background: cs(t).hex()
+            });
+        cols.push(cs(t).hex());
+    });
+    
+    showLightnessCurve(cs, steps);
+    
+    var list = '\'' + cols.join('\',\'') + '\'',
+        colors = cols.join(' '),
+        hexlist = cols.map((c) -> c.replace('#','0x')).join(',');
+    
+    var link = location.href;
+    
+    var range = _.range(steps)[0...steps-1].map(function(s) {
+        return 'min+'+(s+1)+'*d';
+    });
+
+    var d3_syntax = 'function colorscale(min, max) {\n    \\\\ source: '+link+' \n    var d = (max-min)/'+steps+';\n' + '    return d3.scale.threshold()\n        .range(['+list+'])\n        .domain(['+range.join(',')+']);\n}';
+    
+    // copy colors
+    $('<pre/>')
+        .html([colors, hexlist, list, syntax, d3_syntax].join('\n\n'))
+        .appendTo('#out');
+}
+
+function showLightnessCurve(cs, steps) {
+    var s = document.createElementNS('http://www.w3.org/2000/svg','svg');
+    s.setAttribute('width', width+10);
+    s.setAttribute('height', 150);
+    var path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    var d = '',
+        x = 10;
+
+    _.range(steps).each(function(i) {
+        var t = i/(steps-1),
+            y = (102 - cs(t).lab()[0])*1.2;
+        x += width/steps;
+        if (d == '') d = 'M'+[10,y];
+        d += ' V'+y;
+        d += ' H'+x;
+    });        
+    path.setAttribute('d', d);
+    s.appendChild(path);
+    $('#out').append(s);
+}
+
+function serializeUrl() {
+    location.hash = '#' + 
+        'colors='+$('#colors').val().replace(/(, *| +)/g, ',').replace(/'/g, '') + '|' +
+        'steps='+$('#steps').val() + '|' +
+        'bez='+($('#bez').prop('checked') ? 1 : 0) + '|' +
+        'coL='+($('#coL').prop('checked') ? 1 : 0);
+}
+    
+function unserializeUrl() {
+    var vars = location.hash.substr(1).split('|');
+    for v in (v.split('=') for v in vars)
+        [key,val] = v
+        if key == 'steps'
+            $('#steps').val(val)
+        else if key == 'colors'
+            $('#colors').val(val)
+        else if key == 'bez'
+            $('#bez').prop('checked', val == '1')
+        else if key == 'coL'
+            $('#coL').prop('checked', val == '1')  
+}         
+// load presets from hash
+if (location.hash) unserializeUrl()
+
+update()
+$('input').change(update);
+
+</script>
+
+
+</head>
+<body>
+  <div class="container"><div class="row"><div class="span8 offset2">
+<h2>Chroma.js&nbsp;Color Scale&nbsp;Helper</h2>
+
+<p>This <a href="https://github.com/gka/chroma.js" target="_blank">chroma.js</a>-powered tool is here to help us  <a target="_blank" href="http://vis4.net/blog/posts/mastering-multi-hued-color-scales/">mastering multi-hued, multi-stops color scales</a>.</p>
+
+<div class="row"><div class="form well span8">
+    <div class="row">
+        <div class="span5">
+            <label>Enter <a target="_blank" href="http://www.mcfedries.com/books/cightml/x11color.htm">named colors</a> or hex codes:</label>
+            <input id="colors" checked="checked" type="text" value="lightyellow, orange, deeppink, darkred" />
+        </div>
+        <div class="span3">
+            <label>Step count</label>
+            <input id="steps" checked="checked" type="number" value="7" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="span4">
+            <label class="checkbox">
+                <input id="bez" type="checkbox"  checked="checked" />
+                Bezier interpolation
+            </label>
+        </div>
+        <div class="span4">
+            <label class="checkbox">
+                <input id="coL" type="checkbox" checked="checked" />
+                Correct lightness gradient
+            </label>
+        </div>
+    </div>
+</div></div>
+<div id="out"></div>
+
+<div id="footer">
+    <hr/>
+    Created by <a href="http://driven-by-data.net"  target="_blank">Gregor Aisch</a> for the sake of better use of colors in maps and data visualizations. 
+</div>
+    </div>
+    </div>
+    </div>
+  
+</body>
+
+
+</html>
