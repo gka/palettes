@@ -227,7 +227,7 @@ $(function() {
         _.each(vars, function(v) {
             var v = v.split('='),
                 key = v[0], val = v[1];
-            if (key == 'steps') $('#steps,#steps-div').val(val);
+            if (key == 'steps') $('#steps,#steps-div,#steps-seq').val(val);
             else if (key == 'colors') $('#colors').val(val);
             else if (key == 'c0') $('#colors-left').val(val);
             else if (key == 'c1') $('#colors-right').val(val);
