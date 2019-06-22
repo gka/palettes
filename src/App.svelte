@@ -13,11 +13,10 @@
     let steps = [];
     let bezier = true;
     let correctLightness = true;
-    const initialColors = 'lightyellow,orange,deeppink,darkred';
-    // const initialColors = '#f5ff00, #ff9100, deeppink, #8f00cd';
-    let colors = initialColors.split(/\s*,\s*/).map(c => chroma(c));
-    let colors2 = initialColors.split(/\s*,\s*/).reverse().map(c => chroma(c));
-    let numColors = 7;
+
+    let colors = '00429d,00e18d,ffffe0'.split(/\s*,\s*/).map(c => chroma(c));
+    let colors2 = 'ffffe0,ff005e,93003a'.split(/\s*,\s*/).map(c => chroma(c));
+    let numColors = 9;
     let mode = 'sequential';
 
     if (window.location.hash) {
@@ -60,16 +59,19 @@
 
     function readStateFromHash() {
         const parts = window.location.hash.substr(2).split('|');
-        setTimeout(() => {
-            numColors = +parts[0];
-            mode = parts[1] === 's' ? 'sequential' : 'diverging';
-            _mode = mode;
-            colors = parts[2].split(',').map(c => c && chroma(c));
-            colors2 = parts[3] !== '' ? parts[3].split(',').map(c => c && chroma(c)) : [];
-            correctLightness = parts[4] === '1';
-            bezier = parts[5] === '1';
-        })
-
+        if (parts.length === 6) {
+            setTimeout(() => {
+                numColors = +parts[0];
+                mode = parts[1] === 's' ? 'sequential' : 'diverging';
+                _mode = mode;
+                colors = parts[2].split(',').map(c => c && chroma(c));
+                colors2 = parts[3] !== '' ? parts[3].split(',').map(c => c && chroma(c)) : [];
+                correctLightness = parts[4] === '1';
+                bezier = parts[5] === '1';
+            })
+        } else {
+            window.location.hash = '';
+        }
     }
 
     function hashChange() {
