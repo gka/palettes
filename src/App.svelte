@@ -1,13 +1,14 @@
 <script>
     import chroma from 'chroma-js';
     import { beforeUpdate, onMount } from 'svelte';
-
     import Checkbox from './Checkbox.svelte';
     import InputColors from './InputColors.svelte';
     import PalettePreview from './PalettePreview.svelte';
     import Export from './Export.svelte';
     import StepChart from './StepChart.svelte';
     import Card from './Card.svelte';
+    import ColorBlindCheck from './ColorBlindCheck.svelte';
+
     export let name;
 
     let steps = [];
@@ -18,6 +19,7 @@
     let colors2 = 'ffffe0,ff005e,93003a'.split(/\s*,\s*/).map(c => chroma(c));
     let numColors = 9;
     let mode = 'sequential';
+    let simulate = 'none';
 
     if (window.location.hash) {
         readStateFromHash();
@@ -104,6 +106,9 @@
     .foot {
         margin-bottom: 1em;
     }
+    :global(.fa-svelte) {
+        vertical-align: sub;
+    }
 </style>
 
 <svelte:window on:hashchange={hashChange} />
@@ -128,9 +133,14 @@
     </Card>
 
     <Card step="3" title="Check and configure the resulting palette">
-        <div style="margin-bottom: 10px">
-            <Checkbox bind:value={correctLightness} label="correct lightness" />
-            <Checkbox bind:value={bezier} label="bezier interpolation" />
+        <div class="row" style="margin-bottom: 10px">
+            <div class="col">
+                <Checkbox bind:value={correctLightness} label="correct lightness" />
+                <Checkbox bind:value={bezier} label="bezier interpolation" />
+            </div>
+            <div class="col">
+                <ColorBlindCheck bind:colors={steps} bind:active={simulate} />
+            </div>
         </div>
         <PalettePreview
             bind:steps
@@ -139,6 +149,7 @@
             bind:colors
             bind:colors2
             diverging="{mode === 'diverging'}"
+            simulate={simulate}
             bind:numColors />
         <div class="row">
             <div class="col">

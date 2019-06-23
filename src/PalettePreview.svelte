@@ -1,5 +1,6 @@
 <script>
     import chroma from 'chroma-js';
+    import { colorBlindSim } from'./colorBlind';
 
     export let colors = ['red']
     export let colors2 = [];
@@ -8,6 +9,7 @@
     export let bezier;
     export let correctLightness;
 
+    export let simulate = 'none';
     export let steps;
 
     $: even = numColors % 2 === 0;
@@ -42,6 +44,6 @@
 
 <div class="palette">
     {#each steps as step}
-    <div class="step" style="background: {step}"></div>
+    <div class="step" style="background: {simulate === 'none' ? step : colorBlindSim(step, simulate)}"></div>
     {/each}
 </div>
