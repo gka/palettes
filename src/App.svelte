@@ -15,7 +15,7 @@
     let bezier = true;
     let correctLightness = true;
 
-    let colors = '00429d,00e18d,ffffe0'.split(/\s*,\s*/).map(c => chroma(c));
+    let colors = '00429d,96ffea,lightyellow'.split(/\s*,\s*/).map(c => chroma(c));
     let colors2 = 'ffffe0,ff005e,93003a'.split(/\s*,\s*/).map(c => chroma(c));
     let numColors = 9;
     let mode = 'sequential';
@@ -170,6 +170,6 @@
     <div class="foot">
         <hr>
         <p>Created by <a href="https://vis4.net/blog">Gregor Aisch</a> for the sake of better
-        use of colors in maps and data visualizations.</p>
+        use of colors in maps and data visualizations. Feel free to <a href="https://github.com/gka/palettes">fork on Github</a>.</p>
     </div>
 </div>
