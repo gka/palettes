@@ -34,6 +34,8 @@
         bezier?1:0
     ].join('|');
 
+    const isMac = navigator.platform.toUpperCase().indexOf('MAC') > -1;
+
     let _hash = '';
     let _mounted = false;
     let _mode = 'sequential';
@@ -102,12 +104,29 @@
         text-align: center;
         margin: 0px 0.7ex 5px;
     }
-    p { margin-bottom: 0 }
     .foot {
         margin-bottom: 1em;
     }
     :global(.fa-svelte) {
         vertical-align: sub;
+    }
+    kbd
+    {
+        -moz-border-radius:3px;
+        -moz-box-shadow:0 1px 0 rgba(0,0,0,0.2),0 0 0 2px #fff inset;
+        -webkit-border-radius:3px;
+        -webkit-box-shadow:0 1px 0 rgba(0,0,0,0.2),0 0 0 2px #fff inset;
+        background-color:#f7f7f7;
+        border:1px solid #ccc;
+        border-radius:3px;
+        box-shadow:0 1px 0 rgba(0,0,0,0.2),0 0 0 2px #fff inset;
+        color:#333;
+        display:inline-block;
+        /*font-family:Arial,Helvetica,sans-serif;*/
+        line-height:1.4;
+        margin:0 .1em;
+        padding:.1em .6em;
+        text-shadow:0 1px 0 #fff;
     }
 </style>
 
@@ -119,7 +138,7 @@
         <p>This <a href="https://github.com/gka/chroma.js" target="_blank">chroma.js</a>-powered tool is here to help us  <a target="_blank" href="http://vis4.net/blog/posts/mastering-multi-hued-color-scales/">mastering multi-hued, multi-stops color scales</a>.</p>
     </div>
     <Card step="1" title="What kind of palette do you want to create?">
-        <p>I want to create a
+        <p style="margin-bottom: 0">I want to create a
             <select bind:value={mode} class="custom-select">
                 <option>sequential</option>
                 <option>diverging</option>
@@ -165,6 +184,7 @@
     </Card>
 
     <Card step="4" title="Export the color codes in various formats">
+        <p>You can also save your palette for later by bookmarking <a href="#/{hash}">this page</a> using <kbd>{isMac ? 'cmd' : 'ctrl'}</kbd>+<kbd>d</kbd>.</p>
         <Export steps={steps} />
     </Card>
     <div class="foot">
