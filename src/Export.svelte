@@ -6,14 +6,15 @@
     pre {
         padding: 1ex;
         background: #eee;
+        white-space: pre-line;
     }
 </style>
 
 <pre>{steps}</pre>
-<pre>'{steps.join(`', '`)}'</pre>
-<pre>['{steps.join(`', '`)}']</pre>
+<pre>'{steps.join(`','`)}'</pre>
+<pre>['{steps.join(`','`)}']</pre>
 <pre>{steps.join('\n')}</pre>
-<pre>[{steps.map(c => '0x'+c.substr(1)).join(`, `)}]</pre>
+<pre>[{steps.map(c => '0x'+c.substr(1)).join(`,`)}]</pre>
 <pre>
 import &#123; scaleThreshold &#125; from 'd3-scale';
 
