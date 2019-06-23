@@ -19,7 +19,7 @@
     export let steps = [];
     export let mode = 0;
 
-    $: values = steps.map(c => chroma(c).lch()[mode]).map(mode === 2 ? h=>h > 180 ? h-360:h: d=>d);
+    $: values = steps.map(c => chroma(c).lch()[mode]).map(mode === 2 ? h=>h: d=>d);
     $: values2 = values.concat(values[values.length-1]);
 
     $: xScale = scaleLinear()
