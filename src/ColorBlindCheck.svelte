@@ -44,7 +44,7 @@
         <label class="btn btn-sm btn-light"
             class:text-danger="{result.indexOf(type) > -1}"
             class:active={active===type}>
-            <input bind:group={active} value="{type}" type="radio" name="options" id="option1" autocomplete="off" checked={active===type}>{type.substr(0,4)+(type.length>4?'.':'')}
+            <input bind:group={active} value="{type}" type="radio" name="options" id="option1" autocomplete="off" checked={active===type}>{type === 'none' ? 'normal' : type.substr(0,4)+'.'}
         </label>
         {/each}
     </div>
