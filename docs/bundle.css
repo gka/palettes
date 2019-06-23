@@ -3,8 +3,8 @@
 pre.svelte-l6k7sb{padding:1ex;background:#eee}
 h4.svelte-1yea8y5{font-size:1rem}svg.svelte-1yea8y5{width:100%}path.svelte-1yea8y5{fill:none;stroke:black;stroke-width:2}text.svelte-1yea8y5{dominant-baseline:central;font-size:13px;text-anchor:end}line.svelte-1yea8y5{fill:none;stroke:#ddd}line.direct.svelte-1yea8y5{stroke-width:2;stroke:#ccc;stroke-dasharray:6,4}
 .card.svelte-1jaw2bc{margin-bottom:20px}span.step.svelte-1jaw2bc{display:inline-block;background:#f3f3f3;border:1px solid #ddd;color:#bbb;width:1.5em;height:1.5em;line-height:1.5em;text-align:center;margin-right:1ex;font-size:1.35rem}
-div.form-control.svelte-fne8s3{cursor:text}.hidden.svelte-fne8s3{position:absolute;opacity:0;left:-99999px}
-span.badge.svelte-1goszz7{font-weight:normal;font-size:100%;color:#000;position:relative}.badge+.badge.svelte-1goszz7{margin-left:1ex}span.inverted.svelte-1goszz7{color:white}.popover.svelte-1goszz7{position:absolute;top:30px;left:-100px;width:300px}.color-row.svelte-1goszz7{display:flex;margin-bottom:3px}span.lbl.svelte-1goszz7{width:8.333%
-    }span.color.svelte-1goszz7{display:inline-block;height:30px;width:8.333%;border-left:1px solid white;border-bottom:1px solid white}span.color.svelte-1goszz7:nth-child(7){border:2px solid black;margin-top:-1px;margin-right:0px;height:31px}span.color.svelte-1goszz7:nth-child(8){border-left:0}
+div.form-control.svelte-1ub69il{cursor:text}.hidden.svelte-1ub69il{position:absolute;opacity:0;left:-99999px}span.inv.svelte-1ub69il{display:inline-block;width:60px;background:white;height:100%;vertical-align:bottom}
+span.badge.svelte-t530zu{font-weight:normal;font-size:100%;color:#000;position:relative}.badge+.badge.svelte-t530zu{margin-left:1ex}span.inverted.svelte-t530zu{color:white}.popover.svelte-t530zu{position:absolute;top:30px;left:-100px;width:300px}.color-row.svelte-t530zu{display:flex;margin-bottom:3px}span.lbl.svelte-t530zu{width:8.333%
+    }span.color.svelte-t530zu{display:inline-block;height:30px;width:8.333%;border-left:1px solid white;border-bottom:1px solid white}span.color.svelte-t530zu:nth-child(7){border:2px solid black;margin-top:-1px;margin-right:0px;height:31px}span.color.svelte-t530zu:nth-child(8){border-left:0}span.hex.svelte-t530zu{pointer-events:none}
 
 /*# sourceMappingURL=bundle.css.map */

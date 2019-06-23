@@ -4,10 +4,10 @@
     export let value = chroma('red');
 
     let open = false;
+    let dragging = false;
 
-    function toggleEdit() {
-        open = !open;
-    }
+    function toggleEditOpen() { open = true; }
+    function toggleEditClose() { open = false; }
 
     let colorName;
 
@@ -66,16 +66,23 @@
     span.color:nth-child(8) {
         border-left: 0;
     }
+    span.hex {
+        pointer-events: none;
+    }
 </style>
 <span
-    on:mouseenter={toggleEdit}
-    on:mouseleave={toggleEdit}
+    on:dragstart
+    on:dragstart="{(event) => dragging = true}"
+    on:dragend="{(event) => dragging = false, open = false}"
+    draggable="true"
+    on:mouseenter={toggleEditOpen}
+    on:mouseleave={toggleEditClose}
     on:click|stopPropagation="{() => false}"
     class:inverted={value.lab()[0]<50}
     class="badge shadow-sm"
     style="background: {value.hex()}">
-    <span>{value.hex().substr(1)}</span>
-    {#if open}
+    <span class="hex">{value.hex().substr(1)}</span>
+    {#if open && !dragging}
     <div style="position: absolute;top:0px;left:0;right:0;height: 40px">
         <div
             class="popover fade show bs-popover-bottom"
