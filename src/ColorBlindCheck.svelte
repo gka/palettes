@@ -24,11 +24,13 @@
 .text-muted {
     padding-right: 1em;
     font-size: 0.85rem;
+    display: inline-block;
     padding-top: 6px;
 }
-.btn-group {
-    margin-top: -20px;
+.c1 {
+    margin-top: -15px;
 }
+
 </style>
 
 
@@ -38,14 +40,16 @@
     {:else}
     <p class="text-secondary" style="text-align: right;"><Icon icon={faCheck} /> This palette is colorblind-safe.</p>
     {/if}
-    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+    <div class="c1">
         <div class="text-muted">simulate:</div>
-        {#each types as type}
-        <label class="btn btn-sm btn-light"
-            class:text-danger="{result.indexOf(type) > -1}"
-            class:active={active===type}>
-            <input bind:group={active} value="{type}" type="radio" name="options" id="option1" autocomplete="off" checked={active===type}>{type === 'none' ? 'normal' : type.substr(0,4)+'.'}
-        </label>
-        {/each}
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            {#each types as type}
+            <label class="btn btn-sm btn-outline-secondary"
+                class:btn-outline-danger="{result.indexOf(type) > -1}"
+                class:active={active===type}>
+                <input bind:group={active} value="{type}" type="radio" name="options" id="option1" autocomplete="off" checked={active===type}>{type === 'none' ? 'normal' : type.substr(0,4)+'.'}
+            </label>
+            {/each}
+        </div>
     </div>
 </div>
