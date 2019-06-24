@@ -15,11 +15,17 @@
 </script>
 
 <style>
-.colorblind-sim {
-    text-align: right;
-    position: absolute;
-    right: 20px;
-    top: -46px;
+
+@media (min-width: 720px) {
+    .colorblind-sim {
+        text-align: right;
+        position: absolute;
+        right: 20px;
+        top: -46px;
+    }
+    .res {
+        text-align: right;
+    }
 }
 .text-muted {
     padding-right: 1em;
@@ -36,9 +42,9 @@
 
 <div class="colorblind-sim">
     {#if result.length}
-    <p class="text-danger" style="text-align: right;"><Icon icon={faExclamationTriangle} /> This palette is not colorblind-safe.</p>
+    <p class="res text-danger"><Icon icon={faExclamationTriangle} /> This palette is not colorblind-safe.</p>
     {:else}
-    <p class="text-secondary" style="text-align: right;"><Icon icon={faCheck} /> This palette is colorblind-safe.</p>
+    <p class="res text-secondary"><Icon icon={faCheck} /> This palette is colorblind-safe.</p>
     {/if}
     <div class="c1">
         <div class="text-muted">simulate:</div>

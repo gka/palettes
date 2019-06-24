@@ -3,10 +3,10 @@
 pre.svelte-1n20esm{padding:1ex;background:#eee;white-space:pre-wrap}
 h4.svelte-1yea8y5{font-size:1rem}svg.svelte-1yea8y5{width:100%}path.svelte-1yea8y5{fill:none;stroke:black;stroke-width:2}text.svelte-1yea8y5{dominant-baseline:central;font-size:13px;text-anchor:end}line.svelte-1yea8y5{fill:none;stroke:#ddd}line.direct.svelte-1yea8y5{stroke-width:2;stroke:#ccc;stroke-dasharray:6,4}
 .card.svelte-1jaw2bc{margin-bottom:20px}span.step.svelte-1jaw2bc{display:inline-block;background:#f3f3f3;border:1px solid #ddd;color:#bbb;width:1.5em;height:1.5em;line-height:1.5em;text-align:center;margin-right:1ex;font-size:1.35rem}
-.colorblind-sim.svelte-1caieqq{text-align:right;position:absolute;right:20px;top:-46px}.text-muted.svelte-1caieqq{padding-right:1em;font-size:0.85rem;display:inline-block;padding-top:6px}.c1.svelte-1caieqq{margin-top:-15px}
+@media(min-width: 720px){.colorblind-sim.svelte-116gzwh{text-align:right;position:absolute;right:20px;top:-46px}.res.svelte-116gzwh{text-align:right}}.text-muted.svelte-116gzwh{padding-right:1em;font-size:0.85rem;display:inline-block;padding-top:6px}.c1.svelte-116gzwh{margin-top:-15px}
 .fa-svelte.svelte-p8vizn{width:1em;height:1em;overflow:visible;display:inline-block}
 .btn-group.svelte-18fgzm7{position:relative;top:-4px;padding-left:1ex;padding-right:1ex}
-div.form-control.svelte-1ub69il{cursor:text}.hidden.svelte-1ub69il{position:absolute;opacity:0;left:-99999px}span.inv.svelte-1ub69il{display:inline-block;width:60px;background:white;height:100%;vertical-align:bottom}
+div.form-control.svelte-zqagyi{cursor:text;height:auto}.hidden.svelte-zqagyi{position:absolute;opacity:0;left:-99999px}span.inv.svelte-zqagyi{display:inline-block;width:60px;background:white;height:100%;vertical-align:bottom}
 span.badge.svelte-t530zu{font-weight:normal;font-size:100%;color:#000;position:relative}.badge+.badge.svelte-t530zu{margin-left:1ex}span.inverted.svelte-t530zu{color:white}.popover.svelte-t530zu{position:absolute;top:30px;left:-100px;width:300px}.color-row.svelte-t530zu{display:flex;margin-bottom:3px}span.lbl.svelte-t530zu{width:8.333%
     }span.color.svelte-t530zu{display:inline-block;height:30px;width:8.333%;border-left:1px solid white;border-bottom:1px solid white}span.color.svelte-t530zu:nth-child(7){border:2px solid black;margin-top:-1px;margin-right:0px;height:31px}span.color.svelte-t530zu:nth-child(8){border-left:0}span.hex.svelte-t530zu{pointer-events:none}
 

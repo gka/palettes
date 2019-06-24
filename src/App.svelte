@@ -140,11 +140,11 @@
     </div>
     <Card step="1" title="What kind of palette do you want to create?">
         <div class="row">
-            <div class="col">
+            <div class="col-md">
                 Palette type:
                 <ButtonGroup options="{['sequential', 'diverging']}" bind:value={mode} />
             </div>
-            <div class="col">
+            <div class="col-md">
                 Number of colors: <input type="number" min="2" bind:value={numColors} />
             </div>
         </div>
@@ -156,11 +156,11 @@
 
     <Card step="3" title="Check and configure the resulting palette">
         <div class="row" style="margin-bottom: 10px">
-            <div class="col">
+            <div class="col-md">
                 <Checkbox bind:value={correctLightness} label="correct lightness" />
                 <Checkbox bind:value={bezier} label="bezier interpolation" />
             </div>
-            <div class="col">
+            <div class="col-md">
                 <ColorBlindCheck bind:colors={steps} bind:active={simulate} />
             </div>
         </div>
@@ -174,13 +174,13 @@
             simulate={simulate}
             bind:numColors />
         <div class="row">
-            <div class="col">
+            <div class="col-md">
                 <StepChart title="lightness" steps={steps} mode={0} />
             </div>
-            <div class="col">
+            <div class="col-md">
                 <StepChart title="saturation" steps={steps} mode={1} />
             </div>
-            <div class="col">
+            <div class="col-md">
                 <StepChart title="hue" steps={steps} mode={2} />
             </div>
         </div>

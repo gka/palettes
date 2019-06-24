@@ -10,11 +10,11 @@
 </style>
 
 <div class="row">
-    <div class="col">
+    <div class="col-md">
         <ColorList bind:colors />
     </div>
     {#if diverging}
-    <div class="col">
+    <div class="col-md">
         <ColorList bind:colors={colors2} />
     </div>
     {/if}

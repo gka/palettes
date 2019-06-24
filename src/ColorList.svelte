@@ -50,6 +50,7 @@
 <style>
     div.form-control {
         cursor: text;
+        height: auto;
     }
     .hidden {
         position: absolute;
