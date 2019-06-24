@@ -15,7 +15,7 @@ export function colorBlindSim(color, type) {
 }
 
 function checkType(colors, type) {
-    let ok = 0;
+    // let ok = 0;
     let notok = 0;
     let ratioThreshold = 5;
     let smallestPerceivableDistance = 9;
@@ -42,12 +42,11 @@ function checkType(colors, type) {
             }
             // count combinations that are problematic
             if (isNotOk) notok++;
-            else ok++;
+            // else ok++;
         }
     }
     // console.log(type, notok/(ok+notok));
     // compute share of problematic colorss
-    if (notok > 0) console.log(type, notok, ok);
     return notok === 0;
 }
 
