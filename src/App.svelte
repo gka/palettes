@@ -8,6 +8,7 @@
     import StepChart from './StepChart.svelte';
     import Card from './Card.svelte';
     import ColorBlindCheck from './ColorBlindCheck.svelte';
+    import ButtonGroup from './ButtonGroup.svelte';
 
     export let name;
 
@@ -138,13 +139,15 @@
         <p>This <a href="https://github.com/gka/chroma.js" target="_blank">chroma.js</a>-powered tool is here to help us  <a target="_blank" href="http://vis4.net/blog/posts/mastering-multi-hued-color-scales/">mastering multi-hued, multi-stops color scales</a>.</p>
     </div>
     <Card step="1" title="What kind of palette do you want to create?">
-        <p style="margin-bottom: 0">I want to create a
-            <select bind:value={mode} class="custom-select">
-                <option>sequential</option>
-                <option>diverging</option>
-                <!-- <option>qualitative</option> -->
-            </select>
-        color palette with <input type="number" min="2" bind:value={numColors} /> colors.</p>
+        <div class="row">
+            <div class="col">
+                Palette type:
+                <ButtonGroup options="{['sequential', 'diverging']}" bind:value={mode} />
+            </div>
+            <div class="col">
+                Number of colors: <input type="number" min="2" bind:value={numColors} />
+            </div>
+        </div>
     </Card>
 
     <Card step="2" title="Select and arrange input colors">

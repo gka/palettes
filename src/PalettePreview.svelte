@@ -1,6 +1,7 @@
 <script>
     import chroma from 'chroma-js';
     import { colorBlindSim } from'./colorBlind';
+    import _range from 'lodash-es/range';
 
     export let colors = ['red']
     export let colors2 = [];
@@ -17,15 +18,35 @@
     $: numColorsLeft = diverging ? Math.ceil(numColors/2) + (even?1:0) : numColors;
     $: numColorsRight = diverging ? Math.ceil(numColors/2) + (even?1:0) : 0;
 
-    $: stepsLeft = colors.length ? chroma.scale(bezier ? chroma.bezier(colors) : colors)
+    $: genColors = colors.length !== 1 ? colors : autoColors(colors[0], numColorsLeft);
+    $: genColors2 = colors2.length !== 1 ? colors2 : autoColors(colors2[0], numColorsRight);
+
+    $: stepsLeft = colors.length ? chroma.scale(bezier && colors.length>1 ? chroma.bezier(genColors) : genColors)
         .correctLightness(correctLightness)
         .colors(numColorsLeft) : [];
 
-    $: stepsRight = diverging && colors2.length ? chroma.scale(bezier ? chroma.bezier(colors2) : colors2)
+    $: stepsRight = diverging && colors2.length ? chroma.scale(bezier&& colors2.length>1 ? chroma.bezier(genColors2) : genColors2)
         .correctLightness(correctLightness)
         .colors(numColorsRight) : [];
 
-    $: steps = (even && diverging ? stepsLeft.slice(0, stepsLeft.length-1) : stepsLeft).concat(stepsRight.slice(1))
+    $: steps = (even && diverging ? stepsLeft.slice(0, stepsLeft.length-1) : stepsLeft).concat(stepsRight.slice(1));
+
+    function autoColors(color, numColors) {
+        const lab = chroma(color).lab();
+        const lRange = 100 * (0.95 - 1/numColors);
+        const lStep = lRange / (numColors-1);
+        let lStart = (100-lRange)*0.5;
+        const range = _range(lStart, lStart+numColors*lStep, lStep);
+        let offset = 99999;
+        for (let i=0; i < numColors; i++) {
+            let diff = lab[0] - range[i];
+            if (Math.abs(diff) < Math.abs(offset)) {
+                offset = diff;
+            }
+        }
+        const out = range.map(l => chroma.lab([l + offset, lab[1], lab[2]]));
+        return out;
+    }
 </script>
 
 <style>
