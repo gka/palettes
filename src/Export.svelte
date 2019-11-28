@@ -20,7 +20,7 @@ import &#123; scaleThreshold &#125; from 'd3-scale';
 
 function palette(min, max) &#123;
     const d = (max-min)/{steps.length};
-    return = scaleThreshold()
+    return scaleThreshold()
         .range(['{steps.join(`', '`)}'])
         .domain([{steps.slice(1).map((v,i) => `min + d*${i+1}`)}]);
 &#125;
