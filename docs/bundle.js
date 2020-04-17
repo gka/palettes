@@ -5516,7 +5516,7 @@ var app = (function () {
     			div = element("div");
     			attr(div, "class", "step svelte-qylrh0");
     			set_style(div, "background", (ctx.simulate === 'none' ? ctx.step : colorBlindSim(ctx.step, ctx.simulate)));
-    			add_location(div, file$4, 79, 4, 2641);
+    			add_location(div, file$4, 79, 4, 2681);
     		},
 
     		m: function mount(target, anchor) {
@@ -5556,7 +5556,7 @@ var app = (function () {
     				each_blocks[i].c();
     			}
     			attr(div, "class", "palette svelte-qylrh0");
-    			add_location(div, file$4, 77, 0, 2587);
+    			add_location(div, file$4, 77, 0, 2627);
     		},
 
     		l: function claim(nodes) {
@@ -5665,10 +5665,10 @@ var app = (function () {
     		if ($$dirty.diverging || $$dirty.numColors || $$dirty.even) { $$invalidate('numColorsRight', numColorsRight = diverging ? Math.ceil(numColors/2) + (even?1:0) : 0); }
     		if ($$dirty.colors || $$dirty.numColorsLeft) { $$invalidate('genColors', genColors = colors.length !== 1 ? colors : autoColors(colors[0], numColorsLeft)); }
     		if ($$dirty.colors2 || $$dirty.numColorsRight) { $$invalidate('genColors2', genColors2 = colors2.length !== 1 ? colors2 : autoColors(colors2[0], numColorsRight, true)); }
-    		if ($$dirty.colors || $$dirty.bezier || $$dirty.genColors || $$dirty.correctLightness || $$dirty.numColorsLeft) { $$invalidate('stepsLeft', stepsLeft = colors.length ? chroma.scale(bezier && colors.length>1 ? chroma.bezier(genColors) : genColors)
+    		if ($$dirty.colors || $$dirty.bezier || $$dirty.genColors || $$dirty.correctLightness || $$dirty.numColorsLeft) { $$invalidate('stepsLeft', stepsLeft = colors.length ? chroma.scale(bezier && colors.length>1 && colors.length<=5 ? chroma.bezier(genColors) : genColors)
                     .correctLightness(correctLightness)
                     .colors(numColorsLeft) : []); }
-    		if ($$dirty.diverging || $$dirty.colors2 || $$dirty.bezier || $$dirty.genColors2 || $$dirty.correctLightness || $$dirty.numColorsRight) { $$invalidate('stepsRight', stepsRight = diverging && colors2.length ? chroma.scale(bezier&& colors2.length>1 ? chroma.bezier(genColors2) : genColors2)
+    		if ($$dirty.diverging || $$dirty.colors2 || $$dirty.bezier || $$dirty.genColors2 || $$dirty.correctLightness || $$dirty.numColorsRight) { $$invalidate('stepsRight', stepsRight = diverging && colors2.length ? chroma.scale(bezier&& colors2.length>1 &&colors2.length<=5 ? chroma.bezier(genColors2) : genColors2)
                     .correctLightness(correctLightness)
                     .colors(numColorsRight) : []); }
     		if ($$dirty.even || $$dirty.diverging || $$dirty.stepsLeft || $$dirty.stepsRight) { $$invalidate('steps', steps = (even && diverging ? stepsLeft.slice(0, stepsLeft.length-1) : stepsLeft).concat(stepsRight.slice(1))); }
