@@ -35,6 +35,8 @@
         bezier?1:0
     ].join('|');
 
+    $: bezierDisabled = mode==='sequential' ? !(colors.length>1&&colors.length<=5) : !(colors2.length>1&&colors2.length<=5 || colors.length>1&&colors.length<=5);
+
     const isMac = navigator.platform.toUpperCase().indexOf('MAC') > -1;
 
     let _hash = '';
@@ -92,6 +94,12 @@
         margin: 1em 0 1em;
     }
     h1 {
+    }
+    .warning {
+      font-size: 0.8em;
+      color: orange;
+      font-weight: bold;
+      display: block;
     }
     select.custom-select {
         display: inline-block;
@@ -158,7 +166,10 @@
         <div class="row" style="margin-bottom: 10px">
             <div class="col-md">
                 <Checkbox bind:value={correctLightness} label="correct lightness" />
-                <Checkbox bind:value={bezier} label="bezier interpolation" />
+                <Checkbox bind:value={bezier} label="bezier interpolation" disabled={bezierDisabled} />
+                {#if bezierDisabled}
+                <span class="warning">* Bezier interpolation requires 2-5 input colors</span>
+                {/if}
             </div>
             <div class="col-md">
                 <ColorBlindCheck bind:colors={steps} bind:active={simulate} />

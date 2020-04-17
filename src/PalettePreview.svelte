@@ -21,11 +21,11 @@
     $: genColors = colors.length !== 1 ? colors : autoColors(colors[0], numColorsLeft);
     $: genColors2 = colors2.length !== 1 ? colors2 : autoColors(colors2[0], numColorsRight, true);
 
-    $: stepsLeft = colors.length ? chroma.scale(bezier && colors.length>1 ? chroma.bezier(genColors) : genColors)
+    $: stepsLeft = colors.length ? chroma.scale(bezier && genColors.length>1 && genColors.length<=5 ? chroma.bezier(genColors) : genColors)
         .correctLightness(correctLightness)
         .colors(numColorsLeft) : [];
 
-    $: stepsRight = diverging && colors2.length ? chroma.scale(bezier&& colors2.length>1 ? chroma.bezier(genColors2) : genColors2)
+    $: stepsRight = diverging && colors2.length ? chroma.scale(bezier&& genColors2.length>1 &&genColors2.length<=5 ? chroma.bezier(genColors2) : genColors2)
         .correctLightness(correctLightness)
         .colors(numColorsRight) : [];
 
