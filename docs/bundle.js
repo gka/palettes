@@ -3620,16 +3620,17 @@ var app = (function () {
     			t0 = space();
     			label_1 = element("label");
     			t1 = text(ctx.label);
+    			input.disabled = ctx.disabled;
     			attr(input, "type", "checkbox");
     			attr(input, "class", "custom-control-input");
     			attr(input, "id", ctx.id);
-    			add_location(input, file, 8, 4, 260);
+    			add_location(input, file, 9, 4, 294);
     			attr(label_1, "class", "custom-control-label");
     			attr(label_1, "for", ctx.id);
-    			add_location(label_1, file, 9, 4, 349);
+    			add_location(label_1, file, 10, 4, 394);
     			attr(div, "class", "custom-control custom-checkbox");
     			toggle_class(div, "custom-control-inline", ctx.inline);
-    			add_location(div, file, 7, 0, 173);
+    			add_location(div, file, 8, 0, 207);
     			dispose = listen(input, "change", ctx.input_change_handler);
     		},
 
@@ -3650,6 +3651,10 @@ var app = (function () {
 
     		p: function update(changed, ctx) {
     			if (changed.value) input.checked = ctx.value;
+
+    			if (changed.disabled) {
+    				input.disabled = ctx.disabled;
+    			}
 
     			if (changed.label) {
     				set_data(t1, ctx.label);
@@ -3674,10 +3679,10 @@ var app = (function () {
     }
 
     function instance($$self, $$props, $$invalidate) {
-    	let { value = false, inline = true, label = '' } = $$props;
+    	let { value = false, disabled = false, inline = true, label = '' } = $$props;
         const id = Math.round(Math.random()*1e7).toString(36);
 
-    	const writable_props = ['value', 'inline', 'label'];
+    	const writable_props = ['value', 'disabled', 'inline', 'label'];
     	Object.keys($$props).forEach(key => {
     		if (!writable_props.includes(key) && !key.startsWith('$$')) console.warn(`<Checkbox> was created with unknown prop '${key}'`);
     	});
@@ -3689,12 +3694,14 @@ var app = (function () {
 
     	$$self.$set = $$props => {
     		if ('value' in $$props) $$invalidate('value', value = $$props.value);
+    		if ('disabled' in $$props) $$invalidate('disabled', disabled = $$props.disabled);
     		if ('inline' in $$props) $$invalidate('inline', inline = $$props.inline);
     		if ('label' in $$props) $$invalidate('label', label = $$props.label);
     	};
 
     	return {
     		value,
+    		disabled,
     		inline,
     		label,
     		id,
@@ -3705,7 +3712,7 @@ var app = (function () {
     class Checkbox extends SvelteComponentDev {
     	constructor(options) {
     		super(options);
-    		init(this, options, instance, create_fragment, safe_not_equal, ["value", "inline", "label"]);
+    		init(this, options, instance, create_fragment, safe_not_equal, ["value", "disabled", "inline", "label"]);
     	}
 
     	get value() {
@@ -3713,6 +3720,14 @@ var app = (function () {
     	}
 
     	set value(value) {
+    		throw new Error("<Checkbox>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get disabled() {
+    		throw new Error("<Checkbox>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set disabled(value) {
     		throw new Error("<Checkbox>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
 
@@ -9961,7 +9976,7 @@ var app = (function () {
 
     const file$b = "src\\App.svelte";
 
-    // (141:4) <Card step="1" title="What kind of palette do you want to create?">
+    // (149:4) <Card step="1" title="What kind of palette do you want to create?">
     function create_default_slot_3(ctx) {
     	var div2, div0, t0, updating_value, t1, div1, t2, input, current, dispose;
 
@@ -9990,15 +10005,15 @@ var app = (function () {
     			t2 = text("Number of colors: ");
     			input = element("input");
     			attr(div0, "class", "col-md");
-    			add_location(div0, file$b, 142, 12, 4441);
+    			add_location(div0, file$b, 150, 12, 4725);
     			attr(input, "type", "number");
     			attr(input, "min", "2");
-    			attr(input, "class", "svelte-1cvo05r");
-    			add_location(input, file$b, 147, 34, 4673);
+    			attr(input, "class", "svelte-10wwa0d");
+    			add_location(input, file$b, 155, 34, 4957);
     			attr(div1, "class", "col-md");
-    			add_location(div1, file$b, 146, 12, 4617);
+    			add_location(div1, file$b, 154, 12, 4901);
     			attr(div2, "class", "row");
-    			add_location(div2, file$b, 141, 8, 4410);
+    			add_location(div2, file$b, 149, 8, 4694);
     			dispose = listen(input, "input", ctx.input_input_handler);
     		},
 
@@ -10051,7 +10066,7 @@ var app = (function () {
     	};
     }
 
-    // (153:4) <Card step="2" title="Select and arrange input colors">
+    // (161:4) <Card step="2" title="Select and arrange input colors">
     function create_default_slot_2(ctx) {
     	var updating_colors, updating_colors2, current;
 
@@ -10119,9 +10134,33 @@ var app = (function () {
     	};
     }
 
-    // (157:4) <Card step="3" title="Check and configure the resulting palette">
+    // (170:16) {#if bezierDisabled}
+    function create_if_block$6(ctx) {
+    	var span;
+
+    	return {
+    		c: function create() {
+    			span = element("span");
+    			span.textContent = "* Bezier interpolation requires 2-5 input colors";
+    			attr(span, "class", "warning svelte-10wwa0d");
+    			add_location(span, file$b, 170, 16, 5628);
+    		},
+
+    		m: function mount(target, anchor) {
+    			insert(target, span, anchor);
+    		},
+
+    		d: function destroy(detaching) {
+    			if (detaching) {
+    				detach(span);
+    			}
+    		}
+    	};
+    }
+
+    // (165:4) <Card step="3" title="Check and configure the resulting palette">
     function create_default_slot_1(ctx) {
-    	var div2, div0, updating_value, t0, updating_value_1, t1, div1, updating_colors, updating_active, t2, updating_steps, updating_correctLightness, updating_bezier, updating_colors_1, updating_colors2, updating_numColors, t3, div6, div3, t4, div4, t5, div5, current;
+    	var div2, div0, updating_value, t0, updating_value_1, t1, t2, div1, updating_colors, updating_active, t3, updating_steps, updating_correctLightness, updating_bezier, updating_colors_1, updating_colors2, updating_numColors, t4, div6, div3, t5, div4, t6, div5, current;
 
     	function checkbox0_value_binding(value) {
     		ctx.checkbox0_value_binding.call(null, value);
@@ -10143,13 +10182,18 @@ var app = (function () {
     		add_flush_callback(() => updating_value_1 = false);
     	}
 
-    	let checkbox1_props = { label: "bezier interpolation" };
+    	let checkbox1_props = {
+    		label: "bezier interpolation",
+    		disabled: ctx.bezierDisabled
+    	};
     	if (ctx.bezier !== void 0) {
     		checkbox1_props.value = ctx.bezier;
     	}
     	var checkbox1 = new Checkbox({ props: checkbox1_props, $$inline: true });
 
     	add_binding_callback(() => bind(checkbox1, 'value', checkbox1_value_binding));
+
+    	var if_block = (ctx.bezierDisabled) && create_if_block$6();
 
     	function colorblindcheck_colors_binding(value_2) {
     		ctx.colorblindcheck_colors_binding.call(null, value_2);
@@ -10283,35 +10327,37 @@ var app = (function () {
     			t0 = space();
     			checkbox1.$$.fragment.c();
     			t1 = space();
+    			if (if_block) if_block.c();
+    			t2 = space();
     			div1 = element("div");
     			colorblindcheck.$$.fragment.c();
-    			t2 = space();
-    			palettepreview.$$.fragment.c();
     			t3 = space();
+    			palettepreview.$$.fragment.c();
+    			t4 = space();
     			div6 = element("div");
     			div3 = element("div");
     			stepchart0.$$.fragment.c();
-    			t4 = space();
+    			t5 = space();
     			div4 = element("div");
     			stepchart1.$$.fragment.c();
-    			t5 = space();
+    			t6 = space();
     			div5 = element("div");
     			stepchart2.$$.fragment.c();
     			attr(div0, "class", "col-md");
-    			add_location(div0, file$b, 158, 12, 5077);
+    			add_location(div0, file$b, 166, 12, 5361);
     			attr(div1, "class", "col-md");
-    			add_location(div1, file$b, 162, 12, 5296);
+    			add_location(div1, file$b, 173, 12, 5762);
     			attr(div2, "class", "row");
     			set_style(div2, "margin-bottom", "10px");
-    			add_location(div2, file$b, 157, 8, 5018);
+    			add_location(div2, file$b, 165, 8, 5302);
     			attr(div3, "class", "col-md");
-    			add_location(div3, file$b, 176, 12, 5745);
+    			add_location(div3, file$b, 187, 12, 6211);
     			attr(div4, "class", "col-md");
-    			add_location(div4, file$b, 179, 12, 5871);
+    			add_location(div4, file$b, 190, 12, 6337);
     			attr(div5, "class", "col-md");
-    			add_location(div5, file$b, 182, 12, 5998);
+    			add_location(div5, file$b, 193, 12, 6464);
     			attr(div6, "class", "row");
-    			add_location(div6, file$b, 175, 8, 5714);
+    			add_location(div6, file$b, 186, 8, 6180);
     		},
 
     		m: function mount(target, anchor) {
@@ -10320,19 +10366,21 @@ var app = (function () {
     			mount_component(checkbox0, div0, null);
     			append(div0, t0);
     			mount_component(checkbox1, div0, null);
-    			append(div2, t1);
+    			append(div0, t1);
+    			if (if_block) if_block.m(div0, null);
+    			append(div2, t2);
     			append(div2, div1);
     			mount_component(colorblindcheck, div1, null);
-    			insert(target, t2, anchor);
-    			mount_component(palettepreview, target, anchor);
     			insert(target, t3, anchor);
+    			mount_component(palettepreview, target, anchor);
+    			insert(target, t4, anchor);
     			insert(target, div6, anchor);
     			append(div6, div3);
     			mount_component(stepchart0, div3, null);
-    			append(div6, t4);
+    			append(div6, t5);
     			append(div6, div4);
     			mount_component(stepchart1, div4, null);
-    			append(div6, t5);
+    			append(div6, t6);
     			append(div6, div5);
     			mount_component(stepchart2, div5, null);
     			current = true;
@@ -10346,10 +10394,22 @@ var app = (function () {
     			checkbox0.$set(checkbox0_changes);
 
     			var checkbox1_changes = {};
+    			if (changed.bezierDisabled) checkbox1_changes.disabled = ctx.bezierDisabled;
     			if (!updating_value_1 && changed.bezier) {
     				checkbox1_changes.value = ctx.bezier;
     			}
     			checkbox1.$set(checkbox1_changes);
+
+    			if (ctx.bezierDisabled) {
+    				if (!if_block) {
+    					if_block = create_if_block$6();
+    					if_block.c();
+    					if_block.m(div0, null);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
 
     			var colorblindcheck_changes = {};
     			if (!updating_colors && changed.steps) {
@@ -10435,16 +10495,18 @@ var app = (function () {
 
     			destroy_component(checkbox1, );
 
+    			if (if_block) if_block.d();
+
     			destroy_component(colorblindcheck, );
 
     			if (detaching) {
-    				detach(t2);
+    				detach(t3);
     			}
 
     			destroy_component(palettepreview, detaching);
 
     			if (detaching) {
-    				detach(t3);
+    				detach(t4);
     				detach(div6);
     			}
 
@@ -10457,7 +10519,7 @@ var app = (function () {
     	};
     }
 
-    // (189:4) <Card step="4" title="Export the color codes in various formats">
+    // (200:4) <Card step="4" title="Export the color codes in various formats">
     function create_default_slot(ctx) {
     	var p, t0, a, t1, a_href_value, t2, kbd0, t3_value = ctx.isMac ? 'cmd' : 'ctrl', t3, t4, kbd1, t6, t7, current;
 
@@ -10482,12 +10544,12 @@ var app = (function () {
     			t7 = space();
     			export_1.$$.fragment.c();
     			attr(a, "href", a_href_value = "#/" + ctx.hash);
-    			add_location(a, file$b, 189, 67, 6275);
-    			attr(kbd0, "class", "svelte-1cvo05r");
-    			add_location(kbd0, file$b, 189, 106, 6314);
-    			attr(kbd1, "class", "svelte-1cvo05r");
-    			add_location(kbd1, file$b, 189, 142, 6350);
-    			add_location(p, file$b, 189, 8, 6216);
+    			add_location(a, file$b, 200, 67, 6741);
+    			attr(kbd0, "class", "svelte-10wwa0d");
+    			add_location(kbd0, file$b, 200, 106, 6780);
+    			attr(kbd1, "class", "svelte-10wwa0d");
+    			add_location(kbd1, file$b, 200, 142, 6816);
+    			add_location(p, file$b, 200, 8, 6682);
     		},
 
     		m: function mount(target, anchor) {
@@ -10617,27 +10679,27 @@ var app = (function () {
     			a3 = element("a");
     			a3.textContent = "fork on Github";
     			t17 = text(".");
-    			attr(h1, "class", "svelte-1cvo05r");
-    			add_location(h1, file$b, 137, 8, 4009);
+    			attr(h1, "class", "svelte-10wwa0d");
+    			add_location(h1, file$b, 145, 8, 4293);
     			attr(a0, "href", "https://github.com/gka/chroma.js");
     			attr(a0, "target", "_blank");
-    			add_location(a0, file$b, 138, 16, 4066);
+    			add_location(a0, file$b, 146, 16, 4350);
     			attr(a1, "target", "_blank");
     			attr(a1, "href", "http://vis4.net/blog/posts/mastering-multi-hued-color-scales/");
-    			add_location(a1, file$b, 138, 122, 4172);
-    			add_location(p0, file$b, 138, 8, 4058);
-    			attr(div0, "class", "head svelte-1cvo05r");
-    			add_location(div0, file$b, 136, 4, 3981);
-    			add_location(hr, file$b, 193, 8, 6448);
+    			add_location(a1, file$b, 146, 122, 4456);
+    			add_location(p0, file$b, 146, 8, 4342);
+    			attr(div0, "class", "head svelte-10wwa0d");
+    			add_location(div0, file$b, 144, 4, 4265);
+    			add_location(hr, file$b, 204, 8, 6914);
     			attr(a2, "href", "https://vis4.net/blog");
-    			add_location(a2, file$b, 194, 22, 6476);
+    			add_location(a2, file$b, 205, 22, 6942);
     			attr(a3, "href", "https://github.com/gka/palettes");
-    			add_location(a3, file$b, 195, 68, 6617);
-    			add_location(p1, file$b, 194, 8, 6462);
-    			attr(div1, "class", "foot svelte-1cvo05r");
-    			add_location(div1, file$b, 192, 4, 6420);
+    			add_location(a3, file$b, 206, 68, 7083);
+    			add_location(p1, file$b, 205, 8, 6928);
+    			attr(div1, "class", "foot svelte-10wwa0d");
+    			add_location(div1, file$b, 203, 4, 6886);
     			attr(div2, "class", "container");
-    			add_location(div2, file$b, 135, 0, 3952);
+    			add_location(div2, file$b, 143, 0, 4236);
     			dispose = listen(window, "hashchange", ctx.hashChange);
     		},
 
@@ -10687,7 +10749,7 @@ var app = (function () {
     			card1.$set(card1_changes);
 
     			var card2_changes = {};
-    			if (changed.$$scope || changed.steps || changed.mode || changed.simulate || changed.correctLightness || changed.bezier || changed.colors || changed.colors2 || changed.numColors) card2_changes.$$scope = { changed, ctx };
+    			if (changed.$$scope || changed.steps || changed.mode || changed.simulate || changed.correctLightness || changed.bezier || changed.colors || changed.colors2 || changed.numColors || changed.bezierDisabled) card2_changes.$$scope = { changed, ctx };
     			card2.$set(card2_changes);
 
     			var card3_changes = {};
@@ -10882,7 +10944,7 @@ var app = (function () {
     		if ('name' in $$props) $$invalidate('name', name = $$props.name);
     	};
 
-    	let hash;
+    	let hash, bezierDisabled;
 
     	$$self.$$.update = ($$dirty = { numColors: 1, mode: 1, colors: 1, colors2: 1, correctLightness: 1, bezier: 1 }) => {
     		if ($$dirty.numColors || $$dirty.mode || $$dirty.colors || $$dirty.colors2 || $$dirty.correctLightness || $$dirty.bezier) { $$invalidate('hash', hash = [
@@ -10893,6 +10955,7 @@ var app = (function () {
                     correctLightness ? 1:0,
                     bezier?1:0
                 ].join('|')); }
+    		if ($$dirty.mode || $$dirty.colors || $$dirty.colors2) { $$invalidate('bezierDisabled', bezierDisabled = mode==='sequential' ? !(colors.length>1&&colors.length<=5) : !(colors2.length>1&&colors2.length<=5 || colors.length>1&&colors.length<=5)); }
     	};
 
     	return {
@@ -10908,6 +10971,7 @@ var app = (function () {
     		isMac,
     		hashChange,
     		hash,
+    		bezierDisabled,
     		buttongroup_value_binding,
     		input_input_handler,
     		inputcolors_colors_binding,
