@@ -3,6 +3,7 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
+import path from 'path';
 
 const production = !process.env.ROLLUP_WATCH;
 
@@ -10,6 +11,9 @@ export default {
 	input: 'src/main.js',
 	output: {
 		sourcemap: true,
+		sourcemapPathTransform: relativePath => {
+      return path.relative('src', relativePath)
+    },
 		format: 'iife',
 		name: 'app',
 		file: 'docs/bundle.js'
